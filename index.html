@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" href="i-favicon.png"><title>VRealEstate Shop</title>
+<meta name="description" content="Games, bars, club lighting and props for VRChat worlds. Drag in, hit play. PC and Quest. Buy on BOOTH or Jinxxy.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Michroma&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: blueprint-grid hero, sticky "search the district" sidebar, listings grid, quick-view dialog.
+   Single committed look: the VRealEstate night skyline, electric blue into violet. */
+:root{
+  --bg:#02050f; --bg2:#050c1f; --panel:rgba(11,22,50,.66); --panel-solid:#0a1530;
+  --line:rgba(120,170,255,.16); --line2:rgba(120,170,255,.32);
+  --fg:#eef3ff; --mut:#90a2c6; --dim:#5d6e94;
+  --blue:#2f9bff; --cyan:#45d2ff; --violet:#8b5cff; --free:#ff5fa8;
+  --grad:linear-gradient(100deg,var(--cyan),var(--blue) 45%,var(--violet));
+  --display:'Michroma','Eurostile','Segoe UI',system-ui,sans-serif;
+  --body:'Manrope','Segoe UI',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:rgba(2,5,15,.92)}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1320px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(2,5,15,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:18px;height:64px}
+.brand{display:flex;align-items:center;gap:12px;font-family:var(--display);font-size:15px;letter-spacing:.02em;white-space:nowrap}
+.brand img{width:36px;height:36px;border-radius:50%;box-shadow:0 0 18px rgba(47,155,255,.55)}
+.brand b{font-weight:400;color:var(--blue)}
+.brand span{background:linear-gradient(180deg,#fff,#aebbdc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.nav{margin-left:auto;display:flex;align-items:center;gap:22px;font-size:14px;font-weight:600;color:var(--mut)}
+.nav a:hover{color:var(--fg)}
+.nav .cta{color:#03101f;background:var(--grad);padding:9px 16px;border-radius:10px;font-weight:800}
+.nav .cta:hover{filter:brightness(1.1);color:#03101f}
+@media(max-width:760px){.nav a:not(.cta){display:none}}
+
+/* hero */
+.hero{position:relative;overflow:hidden;padding-block:56px 40px;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:-10% -10% 0;z-index:-2;background:
+  radial-gradient(600px 360px at 78% 18%,rgba(139,92,255,.34),transparent 70%),
+  radial-gradient(700px 420px at 18% 30%,rgba(47,155,255,.30),transparent 70%)}
+.floor{position:absolute;left:-20%;right:-20%;bottom:-6%;height:62%;z-index:-1;perspective:420px;pointer-events:none;mask-image:linear-gradient(to top,#000 20%,transparent 95%);-webkit-mask-image:linear-gradient(to top,#000 20%,transparent 95%)}
+.floor i{position:absolute;inset:0;transform:rotateX(62deg);transform-origin:50% 100%;background:
+  repeating-linear-gradient(90deg,rgba(69,210,255,.34) 0 1px,transparent 1px 64px),
+  repeating-linear-gradient(0deg,rgba(139,92,255,.34) 0 1px,transparent 1px 64px);animation:slide 6s linear infinite}
+@keyframes slide{to{background-position:0 64px,0 64px}}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:36px;align-items:center}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--cyan)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(28px,5.4vw,60px);line-height:1.08;margin:16px 0 18px;text-wrap:balance;letter-spacing:-.01em}
+h1 .l1{display:block;background:linear-gradient(180deg,#fff 30%,#a9b8dd);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1 .l2{display:block;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{font-size:clamp(16px,1.7vw,19px);color:var(--mut);max-width:560px;margin:0 0 26px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:14px;padding:12px 20px;border-radius:12px;border:1px solid transparent;cursor:pointer;transition:transform .18s,filter .18s,border-color .18s,background .18s;white-space:nowrap}
+.btn:hover{transform:translateY(-2px)}
+.btn.primary{background:var(--grad);color:#03101f;box-shadow:0 8px 30px -8px rgba(47,155,255,.75)}
+.btn.primary:hover{filter:brightness(1.12)}
+.btn.ghost{background:rgba(255,255,255,.04);border-color:var(--line2);color:var(--fg)}
+.btn.ghost:hover{border-color:var(--cyan);background:rgba(69,210,255,.08)}
+.stats{display:flex;flex-wrap:wrap;gap:12px 34px;margin-top:34px}
+.stat b{display:block;font-family:var(--display);font-weight:400;font-size:26px;line-height:1.1}
+.stat span{font-size:12px;color:var(--mut);letter-spacing:.08em;text-transform:uppercase}
+.mark{justify-self:center;position:relative;width:min(100%,340px);aspect-ratio:1}
+.mark img{width:100%;height:100%;object-fit:contain;-webkit-mask-image:radial-gradient(circle,#000 62%,transparent 71%);mask-image:radial-gradient(circle,#000 62%,transparent 71%);animation:bob 7s ease-in-out infinite}
+.mark::after{content:"";position:absolute;inset:-14%;border-radius:50%;border:1px solid var(--line2);animation:ring 5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-10px)}}
+@keyframes ring{0%,100%{transform:scale(.96);opacity:.35}50%{transform:scale(1.04);opacity:.8}}
+@media(max-width:860px){.hero-grid{grid-template-columns:minmax(0,1fr)}.mark{display:none}}
+
+/* marquee */
+.reel{display:grid;gap:14px;padding-block:6px 30px;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);overflow:hidden}
+.lane{display:flex;gap:14px;width:max-content;animation:run 90s linear infinite}
+.lane.rev{animation-direction:reverse;animation-duration:110s}
+.reel:hover .lane{animation-play-state:paused}
+.lane a{flex:none;width:168px;aspect-ratio:1;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--bg2);transition:transform .25s,border-color .25s}
+.lane a:hover{transform:translateY(-4px) scale(1.03);border-color:var(--cyan)}
+.lane img{width:100%;height:100%;object-fit:cover}
+@keyframes run{to{transform:translateX(-50%)}}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding-block:8px 44px}
+.step{border:1px solid var(--line);border-radius:16px;padding:18px 20px;background:linear-gradient(160deg,rgba(47,155,255,.07),rgba(139,92,255,.04))}
+.step h3{margin:0 0 4px;font-size:15px}
+.step p{margin:0;color:var(--mut);font-size:14px}
+.step .k{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--cyan);text-transform:uppercase}
+@media(max-width:760px){.steps{grid-template-columns:minmax(0,1fr)}}
+
+/* shop */
+.scrim{display:none}
+.shop{display:grid;grid-template-columns:288px minmax(0,1fr);gap:28px;align-items:start;padding-bottom:70px}
+.side{position:sticky;top:84px;border:1px solid var(--line);border-radius:18px;background:var(--panel);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:20px;display:grid;gap:22px;max-height:calc(100vh - 100px);overflow:auto}
+.side h2{margin:0;font-family:var(--display);font-weight:400;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.fld label.t,.fld .t{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin-bottom:10px}
+.search{position:relative}
+.search input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--line2);border-radius:11px;color:var(--fg);padding:11px 12px 11px 38px;font:inherit;font-size:14px}
+.search input::placeholder{color:var(--dim)}
+.search input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(69,210,255,.16)}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--mut);fill:none;stroke-width:2}
+.cats{display:grid;gap:6px}
+.cat{display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;border:1px solid transparent;background:transparent;border-radius:10px;padding:8px 10px;cursor:pointer;color:var(--mut);font-weight:600;font-size:14px;transition:background .15s,color .15s,border-color .15s}
+.cat:hover{background:rgba(255,255,255,.05);color:var(--fg)}
+.cat[aria-pressed="true"]{background:linear-gradient(100deg,rgba(69,210,255,.16),rgba(139,92,255,.16));border-color:var(--line2);color:var(--fg)}
+.cat em{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--dim)}
+.cat[aria-pressed="true"] em{color:var(--cyan)}
+.range{position:relative;height:30px}
+.range .trk{position:absolute;left:0;right:0;top:13px;height:4px;border-radius:4px;background:rgba(255,255,255,.1)}
+.range .fill{position:absolute;top:13px;height:4px;border-radius:4px;background:var(--grad)}
+.range input{position:absolute;left:0;top:0;width:100%;height:30px;margin:0;background:none;pointer-events:none;-webkit-appearance:none;appearance:none}
+.range input::-webkit-slider-thumb{-webkit-appearance:none;pointer-events:auto;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--blue);box-shadow:0 0 14px rgba(47,155,255,.8);cursor:grab}
+.range input::-moz-range-thumb{pointer-events:auto;width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid var(--blue);box-shadow:0 0 14px rgba(47,155,255,.8);cursor:grab}
+.range input::-webkit-slider-runnable-track{background:none}
+.range input::-moz-range-track{background:none}
+.pricelabel{display:flex;justify-content:space-between;font-family:var(--mono);font-size:13px;margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.chip{border:1px solid var(--line2);background:rgba(255,255,255,.03);border-radius:999px;padding:5px 11px;font-size:12.5px;font-weight:700;color:var(--mut);cursor:pointer;transition:all .15s}
+.chip:hover{color:var(--fg);border-color:var(--cyan)}
+.chip[aria-pressed="true"]{background:var(--cyan);border-color:var(--cyan);color:#03101f}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;font-weight:600;cursor:pointer;color:var(--fg)}
+.sw input{position:absolute;opacity:0;pointer-events:none}
+.sw i{width:40px;height:22px;border-radius:99px;background:rgba(255,255,255,.12);position:relative;flex:none;transition:background .2s}
+.sw i::after{content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s}
+.sw input:checked+i{background:var(--blue)}
+.sw input:checked+i::after{transform:translateX(18px)}
+.sw input:focus-visible+i{outline:2px solid var(--cyan);outline-offset:3px}
+.reset{background:none;border:1px solid var(--line2);border-radius:10px;padding:9px;font-weight:700;font-size:13px;color:var(--mut);cursor:pointer}
+.reset:hover{color:var(--fg);border-color:var(--cyan)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.count{font-size:14px;color:var(--mut)}
+.count b{color:var(--fg);font-family:var(--mono)}
+.sort{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--mut)}
+select{background:var(--panel-solid);color:var(--fg);border:1px solid var(--line2);border-radius:10px;padding:9px 12px;font:inherit;font-size:14px;font-weight:600}
+.fbtn{display:none}
+@media(max-width:980px){
+  .shop{grid-template-columns:minmax(0,1fr)}
+  .fbtn{display:inline-flex}
+  .side{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:70;max-height:82vh;border-radius:22px 22px 0 0;transform:translateY(105%);transition:transform .3s;padding-bottom:max(20px,env(safe-area-inset-bottom,0px));background:var(--panel-solid);visibility:hidden}
+  .side.open{transform:none;visibility:visible}
+  .scrim{display:block;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:65;opacity:0;pointer-events:none;transition:opacity .3s}
+  .scrim.on{opacity:1;pointer-events:auto}
+  .closer{display:flex!important}
+}
+.closer{display:none;justify-content:space-between;align-items:center}
+.closer button{background:var(--grad);color:#03101f;border:0;border-radius:10px;padding:8px 14px;font-weight:800;cursor:pointer}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.card{position:relative;display:flex;flex-direction:column;border-radius:18px;background:linear-gradient(170deg,rgba(18,34,72,.8),rgba(7,14,34,.9));border:1px solid var(--line);overflow:hidden;transition:transform .25s,border-color .25s,box-shadow .25s;animation:pop .45s both}
+.card::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:var(--grad);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);opacity:0;transition:opacity .25s;pointer-events:none}
+.card:hover{transform:translateY(-5px);box-shadow:0 22px 50px -22px rgba(47,155,255,.7)}
+.card:hover::after{opacity:1}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+.cover{position:relative;display:block;aspect-ratio:1;background:#02050f;overflow:hidden}
+.cover img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.cover img+img{position:absolute;inset:0;opacity:0;transition:opacity .35s,transform .5s}
+.card:hover .cover img{transform:scale(1.05)}
+.card:hover .cover img+img{opacity:1}
+.badges{position:absolute;left:10px;top:10px;display:flex;gap:6px;flex-wrap:wrap;z-index:2}
+.badge{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;padding:4px 8px;border-radius:7px;background:rgba(2,5,15,.78);border:1px solid var(--line2);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.badge.free{background:var(--free);border-color:var(--free);color:#2a0215;font-weight:700}
+.badge.new{background:var(--cyan);border-color:var(--cyan);color:#03101f;font-weight:700}
+.badge.bundle{background:var(--violet);border-color:var(--violet);color:#fff;font-weight:700}
+.body{display:flex;flex-direction:column;gap:6px;padding:14px 16px 16px;flex:1}
+.kind{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
+.card h3{margin:0;font-size:17px;line-height:1.25}
+.card h3 a:hover{color:var(--cyan)}
+.blurb{margin:0;color:var(--mut);font-size:13.5px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.foot{margin-top:auto;padding-top:12px;display:grid;gap:10px}
+.price{display:flex;align-items:baseline;gap:8px;font-family:var(--display);font-size:19px}
+.price small{font-family:var(--body);font-size:12px;color:var(--dim)}
+.price.free b{background:linear-gradient(100deg,var(--free),#ff9ad0);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:400}
+.price em{font-family:var(--body);font-style:normal;font-size:12px;color:var(--mut)}
+.buy{display:grid;gap:8px;grid-template-columns:1fr 1fr}
+.buy.one{grid-template-columns:1fr}
+.buy .btn{padding:10px 8px;font-size:13px;border-radius:10px}
+.buy .btn.booth{background:var(--grad);color:#03101f}
+.buy .btn.booth:hover{filter:brightness(1.12)}
+.buy .btn.jx{background:transparent;border-color:var(--line2);color:var(--fg)}
+.buy .btn.jx:hover{border-color:var(--cyan);background:rgba(69,210,255,.08)}
+.buy .btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.4}
+.empty{display:none;text-align:center;border:1px dashed var(--line2);border-radius:18px;padding:60px 20px;color:var(--mut)}
+.empty h3{font-family:var(--display);font-weight:400;color:var(--fg);margin:0 0 6px}
+
+/* bands */
+.band{position:relative;overflow:hidden;border:1px solid var(--line2);border-radius:24px;padding:34px;margin-bottom:22px;background:linear-gradient(120deg,rgba(47,155,255,.16),rgba(139,92,255,.16) 60%,rgba(255,95,168,.08));display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center}
+.band h2{font-family:var(--display);font-weight:400;font-size:clamp(20px,3vw,30px);margin:6px 0 8px;line-height:1.2;text-wrap:balance}
+.band p{margin:0;color:var(--mut);max-width:620px}
+@media(max-width:760px){.band{grid-template-columns:minmax(0,1fr);padding:24px}}
+.copy{font-family:var(--mono);font-size:12.5px;color:var(--mut)}
+
+/* footer */
+footer{border-top:1px solid var(--line);background:linear-gradient(180deg,transparent,rgba(47,155,255,.06));padding-block:34px 40px}
+.foot-grid{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(2,minmax(0,.7fr));gap:28px}
+footer h4{margin:0 0 10px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);font-weight:500}
+footer ul{list-style:none;margin:0;padding:0;display:grid;gap:7px;font-size:14px}
+footer li a{color:var(--fg)}footer li a:hover{color:var(--cyan)}
+.tag{font-family:var(--display);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);margin:10px 0 0}
+.fine{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--dim)}
+@media(max-width:760px){.foot-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.foot-grid>div:first-child{grid-column:1/-1}}
+
+/* quick view */
+.qv{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.qv.on{display:flex}
+.qv .veil{position:absolute;inset:0;background:rgba(1,3,10,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);animation:fade .25s}
+.qv .box{position:relative;width:min(1040px,100%);max-height:100%;overflow:auto;border:1px solid var(--line2);border-radius:24px;background:linear-gradient(160deg,#0c1a3d,#050b1f 70%);box-shadow:0 40px 120px -30px rgba(47,155,255,.55);display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);animation:rise .3s}
+@keyframes rise{from{opacity:0;transform:translateY(24px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}}
+.qv .x{position:absolute;right:14px;top:14px;z-index:5;width:38px;height:38px;border-radius:50%;border:1px solid var(--line2);background:rgba(2,5,15,.7);cursor:pointer;font-size:20px;line-height:1}
+.qv .x:hover{border-color:var(--cyan)}
+.gal{padding:22px;display:grid;gap:12px;align-content:start}
+.gal .main{aspect-ratio:1;border-radius:16px;overflow:hidden;background:#02050f;border:1px solid var(--line)}
+.gal .main img{width:100%;height:100%;object-fit:cover}
+.gal .th{display:flex;gap:10px}
+.gal .th button{width:76px;aspect-ratio:1;padding:0;border-radius:11px;overflow:hidden;border:2px solid transparent;background:#02050f;cursor:pointer;opacity:.6}
+.gal .th button[aria-current="true"]{border-color:var(--cyan);opacity:1}
+.gal .th img{width:100%;height:100%;object-fit:cover}
+.info{padding:30px 30px 28px 10px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.info h2{font-family:var(--display);font-weight:400;font-size:clamp(20px,2.6vw,28px);line-height:1.2;margin:0;text-wrap:balance}
+.info .desc{margin:0;color:#c3cde6}
+.feat{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.feat li{position:relative;padding-left:24px;font-size:14.5px;color:#d5def3}
+.feat li::before{content:"";position:absolute;left:0;top:.5em;width:12px;height:12px;border-radius:3px;background:var(--grad);transform:rotate(45deg) scale(.7)}
+.spec{display:flex;flex-wrap:wrap;gap:8px}
+.spec span{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;padding:5px 10px;border-radius:8px;border:1px solid var(--line2);color:var(--mut)}
+.qv .price{font-size:30px}
+.qv .buy{grid-template-columns:1fr 1fr}
+.qv .buy.one{grid-template-columns:1fr}
+.qv .buy .btn{padding:14px 12px;font-size:15px;border-radius:12px}
+.note{font-size:12.5px;color:var(--dim);margin:0}
+.tipbtn{align-self:flex-start;padding:10px 16px;font-size:13px;border-radius:10px}
+@media(max-width:820px){.qv .box{grid-template-columns:minmax(0,1fr)}.info{padding:4px 22px 26px}}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+</head><body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="#top" aria-label="VRealEstate home"><img src="i-logo.webp" alt="" width="36" height="36"><span><b>V</b>RealEstate</span></a>
+  <nav class="nav" aria-label="Main">
+    <a href="#shop">Shop</a><a href="#demo">Demo world</a><a href="#custom">Custom orders</a>
+    <a href="https://discord.gg/36Bta22Rzh" target="_blank" rel="noopener">Discord</a>
+    <a class="cta" href="https://vrealestate.booth.pm/" target="_blank" rel="noopener">BOOTH shop</a>
+  </nav>
+</div></header>
+
+<main id="top">
+<section class="hero"><div class="floor" aria-hidden="true"><i></i></div>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">VRChat world builder's shop</div>
+      <h1><span class="l1">Virtual spaces.</span><span class="l2">Real possibilities.</span></h1>
+      <p class="lede">Arcade games, bars, club lighting and props for your VRChat world. Drag the prefab in, press play. Almost everything runs on PC and Quest, and checkout happens on BOOTH or Jinxxy.</p>
+      <div class="cta-row"><a class="btn primary" href="#shop">Browse the listings</a><a class="btn ghost" href="#demo">Try them in VRChat first</a></div>
+      <div class="stats" id="stats"></div>
+    </div>
+    <div class="mark" aria-hidden="true"><img src="i-logo.webp" alt="" width="340" height="340"></div>
+  </div>
+</section>
+
+<div class="reel" id="reel" aria-label="Preview of the catalog"></div>
+
+<div class="wrap">
+  <section class="steps" aria-label="How buying works">
+    <div class="step"><div class="k">Step 1</div><h3>Find your listing</h3><p>Filter by category, budget or Quest support.</p></div>
+    <div class="step"><div class="k">Step 2</div><h3>Buy on BOOTH or Jinxxy</h3><p>Every button sends you to the shop page. Payment and download happen there.</p></div>
+    <div class="step"><div class="k">Step 3</div><h3>Drop it in Unity</h3><p>Import the package, drag the prefab into your scene, upload. Manuals included.</p></div>
+  </section>
+
+  <section class="shop" id="shop">
+    <div class="scrim" id="scrim"></div>
+    <aside class="side" id="side" aria-label="Filters">
+      <div class="closer"><h2>Filters</h2><button type="button" id="done">Show results</button></div>
+      <h2 class="dsk">Search the district</h2>
+      <div class="fld"><label class="t" for="q">Search</label>
+        <div class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Claw, beer, hockey…" autocomplete="off"></div></div>
+      <div class="fld"><span class="t">Category</span><div class="cats" id="cats"></div></div>
+      <div class="fld"><span class="t">Budget (JPY)</span>
+        <div class="range"><div class="trk"></div><div class="fill" id="fill"></div>
+          <input id="pmin" type="range" min="0" max="7000" step="100" value="0" aria-label="Minimum price"><input id="pmax" type="range" min="0" max="7000" step="100" value="7000" aria-label="Maximum price"></div>
+        <div class="pricelabel"><span id="lmin">¥0</span><span id="lmax">¥7,000+</span></div>
+        <div class="chips" id="presets"></div></div>
+      <div class="fld"><label class="sw"><span>Quest ready</span><input id="quest" type="checkbox"><i></i></label></div>
+      <button class="reset" type="button" id="reset">Reset filters</button>
+    </aside>
+
+    <div>
+      <div class="bar">
+        <div class="count" id="count" aria-live="polite"></div>
+        <div class="sort"><button class="btn ghost fbtn" type="button" id="fbtn">Filters</button>
+          <label for="sort">Sort</label>
+          <select id="sort"><option value="feat">Featured</option><option value="new">Newest</option><option value="pa">Price: low to high</option><option value="pd">Price: high to low</option><option value="az">Name A–Z</option></select></div>
+      </div>
+      <div class="grid" id="grid"></div>
+      <div class="empty" id="empty"><h3>No listing matches</h3><p>Try a wider budget or another category.</p><p><button class="btn ghost" type="button" id="reset2">Reset filters</button></p></div>
+    </div>
+  </section>
+
+  <section class="band" id="demo">
+    <div><div class="eyebrow">Try before you buy</div>
+      <h2>Walk through the games, drink machines and the Beer Tap in VRChat</h2>
+      <p>Our demo world, VRealEstate Game Room, runs the real prefabs. Each visit is a 10-minute demo, so you can test everything on your own avatar before you spend a yen.</p></div>
+    <a class="btn primary" href="https://vrchat.com/home/world/wrld_8ece8481-515b-4f4d-9d7f-a58529b48023" target="_blank" rel="noopener">Open the demo world</a>
+  </section>
+
+  <section class="band" id="custom">
+    <div><div class="eyebrow">Custom orders open</div>
+      <h2>Your logo on a game, a world built to order, a prefab only you have</h2>
+      <p>Tell us what your world needs on Discord. We build it, test it on PC and Quest, and hand it over ready to upload.</p></div>
+    <a class="btn ghost" href="https://discord.gg/36Bta22Rzh" target="_blank" rel="noopener">Talk to us on Discord</a>
+  </section>
+</div>
+</main>
+
+<footer><div class="wrap">
+  <div class="foot-grid">
+    <div><a class="brand" href="#top"><img src="i-logo.webp" alt="" width="36" height="36"><span><b>V</b>RealEstate</span></a><p class="tag">Virtual spaces. Real possibilities.</p></div>
+    <div><h4>Buy</h4><ul>
+      <li><a href="https://vrealestate.booth.pm/" target="_blank" rel="noopener">BOOTH shop</a></li>
+      <li><a href="https://jinxxy.com/VRealEstate" target="_blank" rel="noopener">Jinxxy store</a></li></ul></div>
+    <div><h4>Community</h4><ul>
+      <li><a href="https://discord.gg/36Bta22Rzh" target="_blank" rel="noopener">Discord</a></li>
+      <li><a href="https://x.com/VRealEstateVR" target="_blank" rel="noopener">X</a></li>
+      <li><a href="https://www.youtube.com/@VRealEstate" target="_blank" rel="noopener">YouTube</a></li>
+      <li><a href="https://ko-fi.com/dlibrary" target="_blank" rel="noopener">Tip us on Ko-fi</a></li></ul></div>
+  </div>
+  <p class="fine">Prices are the BOOTH prices in yen; the dollar figure is an estimate. BOOTH and Jinxxy show the final price in your currency at checkout and may differ slightly. VRealEstate is not affiliated with VRChat Inc. Prefabs are for VRChat worlds built with the VRChat SDK3 and Unity.</p>
+</div></footer>
+
+<div class="qv" id="qv" role="dialog" aria-modal="true" aria-labelledby="qvt" hidden>
+  <div class="veil" id="veil"></div>
+  <div class="box"><button class="x" id="qx" type="button" aria-label="Close">×</button><div class="gal" id="gal"></div><div class="info" id="info"></div></div>
+</div>
+
+<script>
+const P=[{"id": 9208073, "rank": 1, "name": "Claw Machine", "cat": "Games", "jx": "o3Blg", "price": 2500, "quest": true, "sdk": "3.10+", "flags": ["new"], "b": "A plush claw machine with a real swinging claw. Win a prize and you keep it.", "f": ["20 plush prizes to win", "The prize you grab comes home with you", "Swinging claw you steer yourself", "Works on PC and Quest"], "n": 3, "tip": false}, {"id": 9151317, "rank": 2, "name": "Drink Machine COSMO-X Club Edition", "cat": "Club & Bar", "jx": "MB9hF", "price": 4500, "quest": true, "sdk": null, "flags": [], "b": "The COSMO-X cocktail machine in club dress, with AudioLink lighting and a full-height video back.", "f": ["Order queue, touch panel and menu signs", "AudioLink corona and video back panel", "Drunk effect for the player who drinks, peanuts sober you up", "PC and Quest, UdonSharp"], "n": 3, "tip": false}, {"id": 9173761, "rank": 3, "name": "Beer Tap", "cat": "Club & Bar", "jx": "0IFjy", "price": 2000, "quest": true, "sdk": "3.10+", "flags": ["new"], "b": "A five-tap bar counter with six beers, a drunk effect and peanuts to sober up.", "f": ["6 beers to pour", "Drunk effect, cured by peanuts", "Quest ready", "Drop-in bar counter"], "n": 3, "tip": false}, {"id": 9151061, "rank": 4, "name": "Tanks", "cat": "Games", "jx": "JxSP1", "price": 3000, "quest": true, "sdk": "3.10+", "flags": [], "b": "RC tank battle royale for up to six players, with CPU opponents and three maps.", "f": ["Up to 6 players, VS CPU", "Three maps", "Quest ready"], "n": 3, "tip": false}, {"id": 8966553, "rank": 5, "name": "Arcade Cabinets Set", "cat": "Games", "jx": "TVdoc", "price": 6500, "quest": true, "sdk": "3.10+", "flags": ["bundle"], "b": "Chomp, Fighters and Fruit Pop in one bundle, about a quarter cheaper than buying them one by one.", "f": ["Chomp 4-player table, Fighters cabinet, Fruit Pop cabinet", "Tested together in one world", "Single prices add up to ¥8,800"], "n": 3, "tip": false}, {"id": 8966502, "rank": 6, "name": "Boom Crew", "cat": "Games", "jx": "Xtfl4", "price": 3000, "quest": true, "sdk": "3.10+", "flags": [], "b": "A bomb-maze party game for up to four players, CPU opponents included.", "f": ["Up to 4 players", "CPU opponents", "Quest ready"], "n": 3, "tip": false}, {"id": 8966516, "rank": 7, "name": "Fighters", "cat": "Games", "jx": "lT1if", "price": 3000, "quest": true, "sdk": "3.10+", "flags": [], "b": "A two-seat fighting game cabinet: play a friend or the CPU.", "f": ["2 players or VS CPU", "Rollback netcode", "Neon cabinet with LED lines"], "n": 3, "tip": false}, {"id": 8966494, "rank": 8, "name": "Basket Arcade", "cat": "Games", "jx": "nUmQ8", "price": 2000, "quest": true, "sdk": "3.10+", "flags": [], "b": "Two basketball arcade machines side by side for 1v1 matches.", "f": ["Two machines, 1v1", "Quest ready", "Drag-and-drop setup"], "n": 3, "tip": false}, {"id": 8966448, "rank": 9, "name": "Air Hockey 7ft", "cat": "Games", "jx": "PXIBE", "price": 2500, "quest": true, "sdk": "3.10+", "flags": [], "b": "A 7 ft air hockey table: play the CPU or go 2v2.", "f": ["VS CPU or 2v2", "LED goal flash and scoreboard", "Quest ready"], "n": 3, "tip": false}, {"id": 8966466, "rank": 10, "name": "Pool Table 8ft", "cat": "Games", "jx": "SxEbi", "price": 2000, "quest": true, "sdk": "3.10+", "flags": [], "b": "An 8 ft pool table with 8-ball and 9-ball rules.", "f": ["8-ball and 9-ball", "Quest ready", "Drag-and-drop setup"], "n": 3, "tip": false}, {"id": 9005046, "rank": 11, "name": "Whack-a-Mole", "cat": "Games", "jx": "BDyB9", "price": 2500, "quest": true, "sdk": null, "flags": [], "b": "A VR whack-a-mole arcade: 60-second rounds, combos and a TOP 5 board.", "f": ["60-second rounds with combos", "TOP 5 score board", "Neon cabinet, Quest ready"], "n": 3, "tip": false}, {"id": 9158191, "rank": 12, "name": "Neon Christmas All-in-One", "cat": "Christmas", "jx": "ycoPc", "price": 3600, "quest": true, "sdk": null, "flags": ["bundle"], "b": "All seven neon Christmas pieces in one pack, 20% cheaper than buying them separately.", "f": ["Tree, snowflakes, mirror ball, arch, signs, gift boxes and DJ sleigh", "AudioLink: it dances to your music", "Club-ready, Quest ready"], "n": 3, "tip": false}, {"id": 8890945, "rank": 13, "name": "Drink Machine COSMO-X", "cat": "Club & Bar", "jx": "nGIbZ", "price": 4500, "quest": true, "sdk": null, "flags": [], "b": "A cocktail machine with an order queue, touch panel and menu signs.", "f": ["6 bases, 12 ingredients, 6 glasses", "Drunk effect that also works on Quest", "Peanuts bring you back to sober"], "n": 3, "tip": false}, {"id": 8966524, "rank": 14, "name": "Fruit Pop", "cat": "Games", "jx": "LxtGB", "price": 2500, "quest": true, "sdk": "3.10+", "flags": [], "b": "A two-player puzzle shooter cabinet with a 30-level adventure.", "f": ["2 players, VS CPU", "30-level adventure", "Quest ready"], "n": 3, "tip": false}, {"id": 8966509, "rank": 15, "name": "Chomp", "cat": "Games", "jx": "4R0Qr", "price": 2300, "quest": true, "sdk": "3.10+", "flags": [], "b": "A four-player arcade table with classic and battle-royale modes.", "f": ["Up to 4 players, CPU available", "Classic and Battle Royale modes", "Quest ready"], "n": 3, "tip": false}, {"id": 9089798, "rank": 16, "name": "Table Football", "cat": "Games", "jx": "pgOz7", "price": 2300, "quest": true, "sdk": null, "flags": [], "b": "A foosball table for one to four players. Grab the rods and spin them in VR.", "f": ["1-4 players or VS CPU", "Grab and spin the rods", "Neon LED lines and scoreboard"], "n": 3, "tip": false}, {"id": 9102204, "rank": 17, "name": "Water Cannon Crab Game", "cat": "Games", "jx": "DzpMB", "price": 2000, "quest": true, "sdk": null, "flags": [], "b": "A water-cannon crab battle with two-hand VR controls.", "f": ["1-2 players or VS CPU", "Two-hand VR controls", "Quest ready"], "n": 3, "tip": false}, {"id": 9083403, "rank": 18, "name": "Bottle Mastermind", "cat": "Games", "jx": "TsZ4o", "price": 800, "quest": true, "sdk": null, "flags": [], "b": "A colour-code puzzle played with bottles: co-op, VS CPU or 1v1.", "f": ["Co-op, CPU or 1v1", "Quest ready"], "n": 3, "tip": false}, {"id": 9127058, "rank": 19, "name": "Mirror Ball", "cat": "Club & Bar", "jx": "52ZgC", "price": 500, "quest": true, "sdk": null, "flags": [], "b": "A disco ball that reacts to your music through AudioLink.", "f": ["AudioLink reactive", "ProTV friendly", "Quest ready"], "n": 3, "tip": false}, {"id": 9189509, "rank": 20, "name": "Soap Bubbles", "cat": "Props & Decor", "jx": "dom9H", "price": 0, "quest": true, "sdk": null, "flags": ["new"], "b": "A bottle of soap bubbles. Blow, wave or press Use for iridescent bubbles everyone sees.", "f": ["Bubbles synced for everyone", "Leave the bottle anywhere, it stays where you put it", "Demo scene included"], "n": 3, "tip": true}, {"id": 9035573, "rank": 21, "name": "Podcast Studio", "cat": "Streaming & Worlds", "jx": "OvdK2", "price": 2980, "quest": true, "sdk": null, "flags": [], "b": "A podcast and talk-show world with an ON AIR sign and OBS streaming, with Japanese support.", "f": ["OBS streaming output", "ON AIR sign", "PC and Quest", "No-ad-wall edition with custom changes: ¥7,980"], "n": 3, "tip": false, "from": true, "note": "Two editions on BOOTH: Standard with ad wall (¥2,980) and No ad wall with custom changes on request (¥7,980)."}, {"id": 9005106, "rank": 22, "name": "VRtuber CyberPunk", "cat": "Streaming & Worlds", "jx": "DBTNL", "price": 2980, "quest": true, "sdk": null, "flags": [], "b": "A cyberpunk VTuber streaming room with OBS output and ProTV.", "f": ["OBS streaming", "ProTV screen", "PC and Quest"], "n": 3, "tip": false}, {"id": 9031391, "rank": 23, "name": "Cam System", "cat": "Streaming & Worlds", "jx": "Ms002", "price": 1500, "quest": true, "sdk": null, "flags": [], "b": "A camera switcher for streams with six plus one cameras and OBS output.", "f": ["6+1 cameras", "Automatic switching", "Digital control panel"], "n": 3, "tip": false}, {"id": 9004945, "rank": 24, "name": "Holo Idol", "cat": "Club & Bar", "jx": "uvfqW", "price": 400, "quest": true, "sdk": null, "flags": [], "b": "A dancing hologram idol on a projector.", "f": ["Four dances", "Two versions in the package", "Quest ready"], "n": 3, "tip": false}, {"id": 9158186, "rank": 25, "name": "Neon DJ Sleigh", "cat": "Christmas", "jx": "D0xbN", "price": 1000, "quest": true, "sdk": null, "flags": [], "b": "A DJ booth shaped like a sleigh, with a speaker tower and AudioLink.", "f": ["Speaker tower", "AudioLink lighting", "Made for clubs"], "n": 3, "tip": false}, {"id": 9121222, "rank": 26, "name": "Christmas Tree", "cat": "Christmas", "jx": "U8BFV", "price": 1000, "quest": true, "sdk": null, "flags": [], "b": "A neon Christmas tree that reacts to music through AudioLink.", "f": ["AudioLink reactive", "ProTV friendly", "Quest ready"], "n": 3, "tip": false}, {"id": 9158181, "rank": 27, "name": "Neon Gift Boxes", "cat": "Christmas", "jx": "2S135", "price": 500, "quest": true, "sdk": null, "flags": [], "b": "Nightclub gift boxes with glowing ribbons and AudioLink.", "f": ["Glowing ribbons", "AudioLink reactive", "Quest ready"], "n": 3, "tip": false}, {"id": 9158177, "rank": 28, "name": "Neon Christmas Signs", "cat": "Christmas", "jx": "doIqd", "price": 500, "quest": true, "sdk": null, "flags": [], "b": "Neon Christmas signs with a reindeer, reacting to music.", "f": ["Reindeer included", "AudioLink reactive", "Quest ready"], "n": 3, "tip": false}, {"id": 9158172, "rank": 29, "name": "Christmas Arch", "cat": "Christmas", "jx": "vHk53", "price": 500, "quest": true, "sdk": null, "flags": [], "b": "An entrance arch that pulses with your music.", "f": ["AudioLink reactive", "Great for club entrances", "Quest ready"], "n": 3, "tip": false}, {"id": 9127036, "rank": 30, "name": "Hanging Snowflakes", "cat": "Christmas", "jx": "Xupdn", "price": 500, "quest": true, "sdk": null, "flags": [], "b": "Hanging neon snowflakes that move with the music.", "f": ["AudioLink reactive", "Ceiling ornaments", "Quest ready"], "n": 3, "tip": false}, {"id": 8966549, "rank": 31, "name": "Smoke Dragon Hookah", "cat": "Club & Bar", "jx": null, "price": 2000, "quest": true, "sdk": "3.10+", "flags": [], "b": "A dragon hookah for two with a lava-glass effect.", "f": ["2 players", "Lava-glass effect", "Quest ready"], "n": 3, "tip": false}, {"id": 8961642, "rank": 32, "name": "Neon Hookah RGB", "cat": "Club & Bar", "jx": "2FxLz", "price": 150, "quest": true, "sdk": null, "flags": [], "b": "A glowing RGB hookah with five flavours.", "f": ["5 flavours", "RGB glow", "Quest ready"], "n": 3, "tip": false}, {"id": 8961339, "rank": 33, "name": "Strum Guitar", "cat": "Props & Decor", "jx": "HFQYu", "price": 300, "quest": true, "sdk": null, "flags": [], "b": "A playable acoustic guitar with a song menu.", "f": ["Strum it in VR", "Song menu", "Udon"], "n": 3, "tip": false}, {"id": 8961441, "rank": 34, "name": "Bonfire Jam Set", "cat": "Beach & Camp", "jx": "wnziN", "price": 1200, "quest": true, "sdk": null, "flags": [], "b": "A campfire set with marshmallows and a playable guitar.", "f": ["Campfire seating", "Marshmallows to roast", "Guitar to play"], "n": 3, "tip": false}, {"id": 8961434, "rank": 35, "name": "Beach Bonfire Lounge", "cat": "Beach & Camp", "jx": null, "price": 700, "quest": true, "sdk": null, "flags": [], "b": "A bonfire lounge with seats for six.", "f": ["6 seats", "Cushions and fire", "Quest ready"], "n": 3, "tip": false}, {"id": 8961425, "rank": 36, "name": "Marshmallow Roast", "cat": "Beach & Camp", "jx": "NTIK6", "price": 400, "quest": true, "sdk": null, "flags": [], "b": "Roast marshmallows over a campfire.", "f": ["Campfire included", "Udon", "Quest ready"], "n": 3, "tip": false}, {"id": 8961449, "rank": 37, "name": "Tahiti Umbrella Set", "cat": "Beach & Camp", "jx": null, "price": 200, "quest": true, "sdk": null, "flags": [], "b": "A straw parasol and chairs for a beach scene.", "f": ["Parasol and chairs", "Quest ready"], "n": 3, "tip": false}, {"id": 8961463, "rank": 38, "name": "Beach Cabana Daybed", "cat": "Beach & Camp", "jx": null, "price": 0, "quest": true, "sdk": null, "flags": [], "b": "A canopy daybed for your beach. Free.", "f": ["Canopy daybed", "Quest ready"], "n": 3, "tip": true}, {"id": 8961798, "rank": 39, "name": "Tiki Torch", "cat": "Beach & Camp", "jx": null, "price": 0, "quest": true, "sdk": null, "flags": [], "b": "A tiki torch with a swaying flame. Free.", "f": ["Swaying flame", "Quest ready"], "n": 3, "tip": true}, {"id": 8978366, "rank": 40, "name": "Graffiti Spray Can", "cat": "Props & Decor", "jx": null, "price": 0, "quest": true, "sdk": null, "flags": [], "b": "A spray can for drawing on walls. Free.", "f": ["Draw on walls", "Udon", "Quest ready"], "n": 3, "tip": true}, {"id": 9051841, "rank": 41, "name": "Haunted Pumpkin", "cat": "Props & Decor", "jx": "69f1u", "price": 150, "quest": true, "sdk": null, "flags": [], "b": "A Halloween pumpkin that laughs when you get close. Click it and a ghost jumps out.", "f": ["Laughs as you approach", "Click for a ghost jump scare", "Quest ready"], "n": 3, "tip": false}, {"id": 8942500, "rank": 42, "name": "Luxury Furniture Set", "cat": "Props & Decor", "jx": null, "price": 499, "quest": true, "sdk": null, "flags": [], "b": "Ten luxury furniture pieces: sofas, beds and more.", "f": ["10 pieces", "Quest ready"], "n": 3, "tip": false}, {"id": 8998272, "rank": 43, "name": "Avatar Disco Dome", "cat": "Avatar", "jx": "ApRQe", "price": 250, "quest": false, "sdk": null, "flags": [], "b": "A disco dome for your avatar that lights up to your music. One-click setup.", "f": ["One-click install", "No Modular Avatar needed", "Lights to your music"], "n": 3, "tip": false}];
+const BOOTH='https://vrealestate.booth.pm/items/',JX='https://jinxxy.com/VRealEstate/',RATE=157,MAXP=7000;
+const CATS=['Games','Club & Bar','Christmas','Beach & Camp','Streaming & Worlds','Props & Decor','Avatar'];
+const $=s=>document.querySelector(s);
+const yen=n=>'¥'+n.toLocaleString('en-US');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ext='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>';
+const S={cat:'',q:'',min:0,max:MAXP,quest:false,sort:'feat'};
+const PRESETS=[['Free',0,0],['Under ¥500',0,500],['¥500–2,000',500,2000],['¥2,000–4,000',2000,4000],['¥4,000+',4000,MAXP]];
+
+function priceHTML(p,big){
+  if(p.price===0)return '<div class="price free"><b>FREE</b>'+(p.tip?'<em>tip optional</em>':'')+'</div>';
+  return '<div class="price">'+(p.from?'<em>from</em> ':'')+yen(p.price)+' <small>≈ $'+Math.round(p.price/RATE)+'</small></div>';
+}
+function buyHTML(p,verb){
+  const jx=p.jx?'<a class="btn jx" href="'+JX+p.jx+'" target="_blank" rel="noopener">Jinxxy '+ext+'</a>':'';
+  return '<div class="buy'+(p.jx?'':' one')+'"><a class="btn booth" href="'+BOOTH+p.id+'" target="_blank" rel="noopener">'+verb+' BOOTH '+ext+'</a>'+jx+'</div>';
+}
+function badges(p){
+  let b='';
+  if(p.price===0)b+='<span class="badge free">Free</span>';
+  if(p.flags.includes('new'))b+='<span class="badge new">New</span>';
+  if(p.flags.includes('bundle'))b+='<span class="badge bundle">Bundle</span>';
+  b+='<span class="badge">'+(p.quest?'PC + Quest':'PC')+'</span>';
+  return '<div class="badges">'+b+'</div>';
+}
+function cardHTML(p){
+  const verb=p.price===0?'Get on':'Buy on';
+  return '<article class="card" data-id="'+p.id+'"><a class="cover" href="#p-'+p.id+'" aria-label="Details: '+esc(p.name)+'">'+badges(p)+
+  '<img src="i-'+p.id+'-0.webp" alt="'+esc(p.name)+'" width="640" height="640" loading="lazy" decoding="async">'+
+  (p.n>1?'<img src="i-'+p.id+'-1.webp" alt="" width="640" height="640" loading="lazy" decoding="async">':'')+'</a>'+
+  '<div class="body"><div class="kind">'+esc(p.cat)+'</div><h3><a href="#p-'+p.id+'">'+esc(p.name)+'</a></h3><p class="blurb">'+esc(p.b)+'</p>'+
+  '<div class="foot">'+priceHTML(p)+buyHTML(p,verb)+'</div></div></article>';
+}
+
+/* build */
+const grid=$('#grid');
+grid.innerHTML=P.map(cardHTML).join('');
+const els={};grid.querySelectorAll('.card').forEach(e=>els[e.dataset.id]=e);
+const quests=P.filter(p=>p.quest).length,frees=P.filter(p=>p.price===0).length;
+$('#stats').innerHTML='<div class="stat"><b>'+P.length+'</b><span>Listings</span></div><div class="stat"><b>'+quests+'</b><span>Quest ready</span></div><div class="stat"><b>'+frees+'</b><span>Free</span></div>';
+const lane=(arr,rev)=>{const h=arr.map(p=>'<a href="#p-'+p.id+'" tabindex="-1" aria-hidden="true"><img src="i-'+p.id+'-0.webp" alt="" width="168" height="168" decoding="async"></a>').join('');return '<div class="lane'+(rev?' rev':'')+'">'+h+h+'</div>'};
+$('#reel').innerHTML=lane(P.filter((p,i)=>i%2===0),false)+lane(P.filter((p,i)=>i%2===1),true);
+$('#presets').innerHTML=PRESETS.map((x,i)=>'<button class="chip" type="button" data-i="'+i+'" aria-pressed="false">'+x[0]+'</button>').join('');
+
+function match(p,ignoreCat){
+  if(!ignoreCat&&S.cat&&p.cat!==S.cat)return false;
+  if(S.quest&&!p.quest)return false;
+  if(p.price<S.min)return false;
+  if(S.max<MAXP&&p.price>S.max)return false;
+  if(S.q){const t=(p.name+' '+p.cat+' '+p.b+' '+p.f.join(' ')).toLowerCase();if(!S.q.toLowerCase().split(/\s+/).every(w=>t.includes(w)))return false}
+  return true;
+}
+const sorters={feat:(a,b)=>a.rank-b.rank,new:(a,b)=>b.id-a.id,pa:(a,b)=>a.price-b.price||a.rank-b.rank,pd:(a,b)=>b.price-a.price||a.rank-b.rank,az:(a,b)=>a.name.localeCompare(b.name)};
+function apply(){
+  const sorted=[...P].sort(sorters[S.sort]);let shown=0;
+  sorted.forEach((p,i)=>{const e=els[p.id];e.style.order=i;const ok=match(p);if(ok&&e.hidden){e.style.animation='none';void e.offsetWidth;e.style.animation=''}e.hidden=!ok;if(ok)shown++});
+  $('#count').innerHTML='Showing <b>'+shown+'</b> of <b>'+P.length+'</b> listings';
+  $('#empty').style.display=shown?'none':'block';grid.style.display=shown?'':'none';
+  $('#cats').innerHTML=[['',P.filter(p=>match(p,true)).length,'All listings']].concat(CATS.map(c=>[c,P.filter(p=>p.cat===c&&match(p,true)).length,c])).map(([c,n,l])=>'<button class="cat" type="button" data-c="'+esc(c)+'" aria-pressed="'+(S.cat===c)+'"><span>'+esc(l)+'</span><em>'+n+'</em></button>').join('');
+  $('#lmin').textContent=yen(S.min);$('#lmax').textContent=S.max>=MAXP?yen(MAXP)+'+':yen(S.max);
+  $('#fill').style.left=(S.min/MAXP*100)+'%';$('#fill').style.right=(100-S.max/MAXP*100)+'%';
+  document.querySelectorAll('#presets .chip').forEach((c,i)=>c.setAttribute('aria-pressed',String(PRESETS[i][1]===S.min&&PRESETS[i][2]===S.max)));
+}
+$('#cats').addEventListener('click',e=>{const b=e.target.closest('.cat');if(!b)return;S.cat=b.dataset.c;apply()});
+$('#presets').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;const x=PRESETS[b.dataset.i];S.min=x[1];S.max=x[2];$('#pmin').value=S.min;$('#pmax').value=S.max;apply()});
+$('#q').addEventListener('input',e=>{S.q=e.target.value.trim();apply()});
+$('#quest').addEventListener('change',e=>{S.quest=e.target.checked;apply()});
+$('#sort').addEventListener('change',e=>{S.sort=e.target.value;apply()});
+$('#pmin').addEventListener('input',e=>{let v=+e.target.value;if(v>S.max){v=S.max;e.target.value=v}S.min=v;apply()});
+$('#pmax').addEventListener('input',e=>{let v=+e.target.value;if(v<S.min){v=S.min;e.target.value=v}S.max=v;apply()});
+function reset(){S.cat='';S.q='';S.min=0;S.max=MAXP;S.quest=false;S.sort='feat';$('#q').value='';$('#quest').checked=false;$('#sort').value='feat';$('#pmin').value=0;$('#pmax').value=MAXP;apply()}
+$('#reset').onclick=reset;$('#reset2').onclick=reset;
+const side=$('#side'),scrim=$('#scrim');
+const drawer=on=>{side.classList.toggle('open',on);scrim.classList.toggle('on',on)};
+$('#fbtn').onclick=()=>drawer(true);$('#done').onclick=()=>drawer(false);scrim.onclick=()=>drawer(false);
+apply();
+
+/* quick view */
+const qv=$('#qv');let lastFocus=null;
+function openQV(id){
+  const p=P.find(x=>String(x.id)===String(id));if(!p)return;
+  lastFocus=document.activeElement;
+  const thumbs=Array.from({length:p.n},(_,i)=>'<button type="button" data-i="'+i+'" aria-label="Image '+(i+1)+'" aria-current="'+(i===0)+'"><img src="i-'+p.id+'-'+i+'.webp" alt="" width="76" height="76"></button>').join('');
+  $('#gal').innerHTML='<div class="main"><img id="mainimg" src="i-'+p.id+'-0.webp" alt="'+esc(p.name)+'" width="640" height="640"></div>'+(p.n>1?'<div class="th">'+thumbs+'</div>':'');
+  const spec=[p.quest?'PC + Quest':'PC',p.sdk?'VRChat SDK '+p.sdk:'VRChat SDK3',p.flags.includes('bundle')?'Bundle':(p.cat==='Avatar'?'One-click setup':'Drag & drop')].map(s=>'<span>'+s+'</span>').join('');
+  const note=p.price===0?(p.tip?'Free to download. If you like it, you can leave an optional tip on Ko-fi'+(p.jx?', or choose your own price on Jinxxy':'')+'.':'Free to download.'):(p.note||'Checkout and download happen on the shop page you pick.');
+  $('#info').innerHTML='<div class="kind">'+esc(p.cat)+'</div><h2 id="qvt">'+esc(p.name)+'</h2>'+priceHTML(p)+'<p class="desc">'+esc(p.b)+'</p><ul class="feat">'+p.f.map(f=>'<li>'+esc(f)+'</li>').join('')+'</ul><div class="spec">'+spec+'</div>'+buyHTML(p,p.price===0?'Get on':'Buy on')+(p.tip?'<a class="btn ghost tipbtn" href="https://ko-fi.com/dlibrary" target="_blank" rel="noopener">Leave a tip on Ko-fi '+ext+'</a>':'')+'<p class="note">'+esc(note)+'</p>';
+  qv.hidden=false;qv.classList.add('on');document.body.style.overflow='hidden';$('#qx').focus();
+}
+function closeQV(fromHash){
+  qv.classList.remove('on');qv.hidden=true;document.body.style.overflow='';
+  if(!fromHash&&/^#p-/.test(location.hash)){try{history.replaceState(null,'',location.href.split('#')[0])}catch(_){location.hash=''}}
+  if(lastFocus&&lastFocus.focus)lastFocus.focus();
+}
+$('#qx').onclick=()=>closeQV();$('#veil').onclick=()=>closeQV();
+$('#gal').addEventListener('click',e=>{const b=e.target.closest('.th button');if(!b)return;$('#mainimg').src=b.querySelector('img').src;document.querySelectorAll('.th button').forEach(x=>x.setAttribute('aria-current',String(x===b)))});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&qv.classList.contains('on'))closeQV();if(e.key==='Tab'&&qv.classList.contains('on')){const f=[...qv.querySelectorAll('a[href],button')].filter(x=>x.offsetParent!==null);if(!f.length)return;const a=f[0],z=f[f.length-1];if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}});
+function route(){const m=location.hash.match(/^#p-(\d+)$/);if(m)openQV(m[1]);else if(qv.classList.contains('on'))closeQV(true)}
+window.addEventListener('hashchange',route);route();
+</script>
+
+</body></html>
