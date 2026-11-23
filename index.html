@@ -44,7 +44,7 @@ button{font:inherit;color:inherit}
 @media(max-width:760px){.nav a:not(.cta){display:none}}
 
 /* hero */
-.hero{position:relative;overflow:hidden;padding-block:56px 40px;isolation:isolate}
+.hero{position:relative;overflow:hidden;padding-block:56px 56px;isolation:isolate}
 .hero::before{content:"";position:absolute;inset:-10% -10% 0;z-index:-2;background:
   radial-gradient(600px 360px at 78% 18%,rgba(139,92,255,.34),transparent 70%),
   radial-gradient(700px 420px at 18% 30%,rgba(47,155,255,.30),transparent 70%)}
@@ -76,24 +76,6 @@ h1 .l2{display:block;background:var(--grad);-webkit-background-clip:text;backgro
 @keyframes bob{50%{transform:translateY(-10px)}}
 @keyframes ring{0%,100%{transform:scale(.96);opacity:.35}50%{transform:scale(1.04);opacity:.8}}
 @media(max-width:860px){.hero-grid{grid-template-columns:minmax(0,1fr)}.mark{display:none}}
-
-/* marquee */
-.reel{display:grid;gap:14px;padding-block:6px 30px;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);overflow:hidden}
-.lane{display:flex;gap:14px;width:max-content;animation:run 90s linear infinite}
-.lane.rev{animation-direction:reverse;animation-duration:110s}
-.reel:hover .lane{animation-play-state:paused}
-.lane a{flex:none;width:168px;aspect-ratio:1;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--bg2);transition:transform .25s,border-color .25s}
-.lane a:hover{transform:translateY(-4px) scale(1.03);border-color:var(--cyan)}
-.lane img{width:100%;height:100%;object-fit:cover}
-@keyframes run{to{transform:translateX(-50%)}}
-
-/* steps */
-.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding-block:8px 44px}
-.step{border:1px solid var(--line);border-radius:16px;padding:18px 20px;background:linear-gradient(160deg,rgba(47,155,255,.07),rgba(139,92,255,.04))}
-.step h3{margin:0 0 4px;font-size:15px}
-.step p{margin:0;color:var(--mut);font-size:14px}
-.step .k{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--cyan);text-transform:uppercase}
-@media(max-width:760px){.steps{grid-template-columns:minmax(0,1fr)}}
 
 /* shop */
 .scrim{display:none}
@@ -266,15 +248,7 @@ footer li a{color:var(--fg)}footer li a:hover{color:var(--cyan)}
   </div>
 </section>
 
-<div class="reel" id="reel" aria-label="Preview of the catalog"></div>
-
 <div class="wrap">
-  <section class="steps" aria-label="How buying works">
-    <div class="step"><div class="k">Step 1</div><h3>Find your listing</h3><p>Filter by category, budget or Quest support.</p></div>
-    <div class="step"><div class="k">Step 2</div><h3>Buy on BOOTH or Jinxxy</h3><p>Every button sends you to the shop page. Payment and download happen there.</p></div>
-    <div class="step"><div class="k">Step 3</div><h3>Drop it in Unity</h3><p>Import the package, drag the prefab into your scene, upload. Manuals included.</p></div>
-  </section>
-
   <section class="shop" id="shop">
     <div class="scrim" id="scrim"></div>
     <aside class="side" id="side" aria-label="Filters">
@@ -383,8 +357,6 @@ grid.innerHTML=P.map(cardHTML).join('');
 const els={};grid.querySelectorAll('.card').forEach(e=>els[e.dataset.id]=e);
 const quests=P.filter(p=>p.quest).length,frees=P.filter(p=>p.price===0).length;
 $('#stats').innerHTML='<div class="stat"><b>'+P.length+'</b><span>Listings</span></div><div class="stat"><b>'+quests+'</b><span>Quest ready</span></div><div class="stat"><b>'+frees+'</b><span>Free</span></div>';
-const lane=(arr,rev)=>{const h=arr.map(p=>'<a href="#p-'+p.id+'" tabindex="-1" aria-hidden="true"><img src="i-'+p.id+'-0.webp" alt="" width="168" height="168" decoding="async"></a>').join('');return '<div class="lane'+(rev?' rev':'')+'">'+h+h+'</div>'};
-$('#reel').innerHTML=lane(P.filter((p,i)=>i%2===0),false)+lane(P.filter((p,i)=>i%2===1),true);
 $('#presets').innerHTML=PRESETS.map((x,i)=>'<button class="chip" type="button" data-i="'+i+'" aria-pressed="false">'+x[0]+'</button>').join('');
 
 function match(p,ignoreCat){
